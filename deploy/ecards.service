@@ -1,0 +1,17 @@
+[Unit]
+Description=ecards service
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+EnvironmentFile=/etc/far-app.env
+WorkingDirectory=/opt/far/service
+ExecStart=/usr/bin/python3 /opt/far/service/app.py
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/far-app /var/www/far-users /var/lib/far-log
+
+[Install]
+WantedBy=multi-user.target

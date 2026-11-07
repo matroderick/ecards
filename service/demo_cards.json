@@ -1,0 +1,54 @@
+{
+  "base_url": "https://cards.example.com",
+  "people": {
+    "demo": {
+      "name": "Sam Rivera",
+      "default": "work",
+      "personas": {
+        "work": {
+          "label": "Work",
+          "org": "Rivera Studio",
+          "title": "Design Director",
+          "note": "This is a demo card. Make your own card",
+          "phone": "+44 20 7946 0123",
+          "email": "sam@example.com",
+          "url": "https://example.com",
+          "booking": {"url": "https://example.com/book", "label": "Book a meeting"},
+          "accent": "#0f766e",
+          "no_location": true,
+          "socials": [
+            {"type": "linkedin", "url": "https://www.linkedin.com/"},
+            {"type": "github", "url": "https://github.com/"},
+            {"type": "whatsapp", "url": "https://wa.me/442079460123"}
+          ],
+          "links": [{"label": "Portfolio", "url": "https://example.com/portfolio"}]
+        },
+        "photo": {
+          "label": "Photography",
+          "title": "Street & travel photographer",
+          "note": "Swipe left or right to switch cards.",
+          "email": "sam.photo@example.com",
+          "url": "https://example.com/photos",
+          "accent": "#7c3aed",
+          "no_location": true,
+          "socials": [
+            {"type": "instagram", "url": "https://www.instagram.com/"},
+            {"type": "facebook", "url": "https://www.facebook.com/"}
+          ],
+          "links": [{"label": "Prints shop", "url": "https://example.com/prints"}]
+        },
+        "me": {
+          "label": "Personal",
+          "phone": "+44 20 7946 0456",
+          "email": "sam.personal@example.com",
+          "accent": "#c2410c",
+          "no_location": true,
+          "socials": [
+            {"type": "whatsapp", "url": "https://wa.me/442079460456"},
+            {"type": "telegram", "url": "https://t.me/"}
+          ]
+        }
+      }
+    }
+  }
+}

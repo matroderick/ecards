@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{SITE}} – your digital business card</title>
+<meta name="description" content="A free digital business card at yourname.{{BASE}}. Several cards, one QR code, see who opened it. No app, no ads.">
+<style>
+:root{--bg:#f6f4ef;--ink:#17191c;--muted:#5f6670;--line:#e2ded3;--card:#fff;--accent:#c2410c}
+@media(prefers-color-scheme:dark){:root{--bg:#121315;--ink:#eceae4;--muted:#a1a6ad;--line:#2a2c30;--card:#1a1c1f;--accent:#fb923c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit}.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--line);font:600 15px/1 ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase}
+nav a{text-decoration:none}nav .in{border:1px solid var(--ink);padding:9px 14px;border-radius:999px;font-size:13px}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;padding:64px 0 48px}
+h1{font:400 clamp(38px,6vw,64px)/1.05 Georgia,"Times New Roman",serif;margin:0 0 18px;letter-spacing:-.02em}h1 em{color:var(--accent)}
+.lead{font-size:19px;color:var(--muted);max-width:30em;margin:0 0 26px}
+.cta{display:inline-block;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:600;padding:14px 22px;border-radius:999px}
+.sub{margin-left:14px;color:var(--muted);font-size:15px}a.sub{color:var(--ink);font-weight:600}@media(max-width:760px){.sub{display:block;margin:12px 0 0}}
+.stack{position:relative;height:380px;width:min(300px,100%);margin:0 auto}
+.c{position:absolute;inset:0;border-radius:22px;border:1px solid var(--line);background:var(--card);padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.12)}
+.c i{display:block;height:64px;margin:-18px -18px 0;border-radius:22px 22px 0 0}
+.c b{display:block;margin-top:34px;font-size:20px}.c span{color:var(--muted);font-size:14px}
+.c .bar{height:34px;border-radius:10px;margin-top:12px;background:var(--line)}.c .bar:first-of-type{margin-top:18px}
+.c .av{position:absolute;top:34px;left:50%;margin-left:-32px;width:64px;height:64px;border-radius:50%;border:4px solid var(--card)}
+.c1{transform:rotate(-7deg) translate(-22px,10px)}.c2{transform:rotate(5deg) translate(24px,0)}.c3{transform:none}
+.c1 i,.c1 .av{background:#0f766e}.c2 i,.c2 .av{background:#7c3aed}.c3 i,.c3 .av{background:#c2410c}
+.c3 b,.c3 span,.c3 .bar{text-align:center}.c3 b{margin-top:44px}.c3 span{display:block}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:16px 0 56px}
+.f{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}.f h3{margin:0 0 6px;font-size:18px}.f p{margin:0;color:var(--muted);font-size:15px}
+.steps{border-top:1px solid var(--line);padding:40px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.steps div{font-size:15px;color:var(--muted)}.steps b{display:block;color:var(--ink);font:600 13px ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:14px;display:flex;gap:18px;flex-wrap:wrap}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding-top:36px}.stack{height:340px}.grid,.steps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="/">{{SITE}}</a><a class="in" href="https://app.{{BASE}}/">Sign in</a></nav>
+<section class="hero">
+<div>
+<h1>Your business card, <em>one tap away.</em></h1>
+<p class="lead">Get a card at <b>yourname.{{BASE}}</b>. Share it with a QR code, let people save your contact in one tap, and keep separate cards for work, side projects and friends.</p>
+<a class="cta" href="https://app.{{BASE}}/request">Request an invite</a><a class="sub" href="https://app.{{BASE}}/demo">Try the demo →</a><span class="sub">Free · invite-only beta · no password</span>
+</div>
+<div class="stack" aria-hidden="true">
+<div class="c c1"><i></i><div class="av"></div></div><div class="c c2"><i></i><div class="av"></div></div>
+<div class="c c3"><i></i><div class="av"></div><b>Your Name</b><span>Founder · Your Company</span><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+</div>
+</section>
+<section class="grid">
+<div class="f"><h3>Several cards, one address</h3><p>Work, personal, a side project. Visitors swipe between them. Each has its own colour, logo and links.</p></div>
+<div class="f"><h3>QR and print-ready cards</h3><p>Download a phone-screen card to show in person, or a sheet of ten printable 85×55&nbsp;mm cards with your QR code.</p></div>
+<div class="f"><h3>See who opened it</h3><p>A private log shows when someone viewed a card and which links they tapped. Visitors can press <em>Forget me</em> any time.</p></div>
+</section>
+<section class="steps">
+<div><b>1 · Sign in</b>We email you a link. No passwords.</div>
+<div><b>2 · Fill in your card</b>Live preview as you type. Photo, logo, colour, links.</div>
+<div><b>3 · Share</b>Show the QR code, send the link, or print cards.</div>
+</section>
+<footer><span>© {{SITE}}</span><a href="https://app.{{BASE}}/terms">Terms</a><a href="https://app.{{BASE}}/privacy">Privacy</a><a href="mailto:{{CONTACT}}">{{CONTACT}}</a></footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Visitor log</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--ink:#14171c;--muted:#667085;--rule:#e4e7ec;--accent:#0f766e;--accent2:#c2410c;--bar:#d6ebe8;--chip:#eef2f6}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1013;--card:#171a1f;--ink:#eceff3;--muted:#98a2b3;--rule:#2a2f37;--accent:#2dd4bf;--accent2:#fb923c;--bar:#143a38;--chip:#232830}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
+.sub{color:var(--muted);margin-bottom:16px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 18px}
+select,button,input{font:inherit;color:inherit;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:7px 10px}
+button{cursor:pointer}button:hover{border-color:var(--muted)}
+label.chk{display:inline-flex;gap:6px;align-items:center;cursor:pointer;padding:6px 4px}
+.grid{display:grid;gap:12px}.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.cols{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:12px}
+.box{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
+.tile b{display:block;font-size:26px;line-height:1.1;margin-top:2px}.tile span{color:var(--muted);font-size:12px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:8px;align-items:center;padding:3px 0;position:relative}
+.row i{position:absolute;left:0;top:2px;bottom:2px;background:var(--bar);border-radius:4px;z-index:0}
+.row span{position:relative;z-index:1;padding-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row em{font-style:normal;text-align:right;color:var(--muted);position:relative;z-index:1}
+.chart{display:flex;align-items:flex-end;gap:2px;height:90px}.chart div{flex:1;background:var(--accent);border-radius:2px 2px 0 0;min-height:1px;opacity:.85}.chart div:hover{opacity:1}
+.axis{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:4px}
+.feed{margin-top:12px}.tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}.vis>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:150px minmax(0,1.1fr) minmax(0,1.5fr);gap:10px;padding:10px 2px;align-items:start}.vis>summary::-webkit-details-marker{display:none}.vis{border-top:1px solid var(--rule)}.vis:first-child{border-top:0}.sess{padding:2px 2px 8px 14px;border-left:2px solid var(--rule);margin:0 0 8px 6px}.tech{margin:4px 0 10px 20px;color:var(--muted)}.tech summary{cursor:pointer}.tech dl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:2px 12px;margin:8px 0 0}.tech dd{margin:0;color:var(--ink);word-break:break-word}.sess .hd{color:var(--muted);font-size:12px;margin-top:6px}.step{padding:2px 0}.mx{width:100%;border-collapse:collapse;font-size:13px}.mx td,.mx th{padding:4px 6px;text-align:right;border-bottom:1px solid var(--rule)}.mx th:first-child,.mx td:first-child{text-align:left}.mx th{color:var(--muted);font-weight:500}.v{border-top:1px solid var(--rule)}.v:first-child{border-top:0}
+.v>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:118px minmax(0,1.1fr) minmax(0,1fr) minmax(0,.9fr) 52px minmax(0,1.2fr);gap:10px;padding:9px 2px;align-items:start}
+.v>summary::-webkit-details-marker{display:none}
+.v>summary:hover{background:color-mix(in srgb,var(--chip) 60%,transparent)}
+.t{color:var(--muted);font-size:12px}.s{color:var(--muted);font-size:12px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:4px}.c{background:var(--chip);border-radius:999px;padding:1px 8px;font-size:12px;white-space:nowrap}
+.c.hot{background:var(--accent);color:#fff}.c.card{background:transparent;border:1px solid var(--rule)}
+.det{padding:6px 2px 14px 128px;color:var(--muted)}.det dl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:2px 12px;margin:0}.det dt{color:var(--muted)}.det dd{margin:0;color:var(--ink);word-break:break-word}
+.tl{margin:8px 0 0;padding:0;list-style:none}.tl li{padding:1px 0}
+.lock{max-width:360px;margin:12vh auto;text-align:center}.lock input{width:100%;margin:12px 0 8px}.lock button{width:100%;background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.err{color:var(--accent2);min-height:20px}
+.empty{color:var(--muted);padding:20px 0;text-align:center}
+.foot{color:var(--muted);font-size:12px;margin-top:24px}
+@media(max-width:760px){.vis>summary{grid-template-columns:1fr;gap:4px}.v>summary{grid-template-columns:1fr 1fr;gap:4px 10px}.det{padding-left:2px}.det dl{grid-template-columns:110px minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+<div class="lock" id="lock" hidden>
+<h1>Visitor log</h1><div class="sub">Private. Enter the log token.</div>
+<form id="f"><input id="tok" type="password" autocomplete="current-password" placeholder="Token" autofocus><button>Unlock</button></form>
+<div class="err" id="err"></div>
+</div>
+<div id="main" hidden>
+<h1>Visitor log</h1>
+<div class="sub" id="sub"></div>
+<div class="bar">
+<select id="days"><option value="1">Last 24 hours</option><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="365">All (up to a year)</option></select>
+<select id="cardf"></select>
+<input id="q" type="search" placeholder="Search IP, city, card, link…" style="min-width:210px"><label class="chk"><input type="checkbox" id="hideme" checked> Hide my visits</label>
+<button id="markme"></button>
+<label class="chk"><input type="checkbox" id="bots"> Show bots</label>
+<button id="refresh">Refresh</button>
+<button id="csv">Export CSV</button>
+<button id="json">Export JSON</button>
+<button id="lockbtn">Lock</button>
+</div>
+<div class="box feed"><div id="feed"></div><div style="text-align:center;margin-top:10px"><button id="more" hidden>Show more</button></div></div>
+<div class="foot" id="foot"></div>
+</div>
+</div>
+<script>
+(function(){
+var API=window.FAR_API||'/api/log.cgi',LS=window.localStorage,$=function(i){return document.getElementById(i)};
+function ls(k,v){try{if(v===undefined)return LS.getItem(k);if(v===null)LS.removeItem(k);else LS.setItem(k,v)}catch(e){return null}}
+var DATA=null,V=[],shown=100;
+var BOT=/bot|crawl|spider|slurp|headless|lighthouse|preview|python|curl|wget|facebookexternalhit|monitor|uptime/i;
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function host(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return ''}}
+function flag(cc){return cc&&cc.length===2?String.fromCodePoint.apply(null,cc.toUpperCase().split('').map(function(c){return 127397+c.charCodeAt(0)})):''}
+function fmt(n){return n.toLocaleString()}
+function dur(s){if(!s)return '–';if(s<60)return s+'s';return Math.floor(s/60)+'m'+(s%60?(' '+s%60+'s'):'')}
+function ago(ts){var d=DATA.now-ts;if(d<60)return 'just now';if(d<3600)return Math.floor(d/60)+'m ago';if(d<86400)return Math.floor(d/3600)+'h ago';return Math.floor(d/86400)+'d ago'}
+function when(ts){return new Date(ts*1000).toLocaleString([],{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}
+function parseUA(ua,v){ua=ua||'';var os='',dev='Desktop',br='',m,ch=v.ch||{};
+ if(/iPhone/.test(ua)){dev='iPhone';m=ua.match(/OS (\d+)[_.](\d+)/);os='iOS'+(m?' '+m[1]+'.'+m[2]:'')}
+ else if(/iPad/.test(ua)||(/Macintosh/.test(ua)&&v.touch>1)){dev='iPad';m=ua.match(/OS (\d+)[_.](\d+)/);os='iPadOS'+(m?' '+m[1]+'.'+m[2]:'')}
+ else if(/Android/.test(ua)){dev=/Mobile/.test(ua)?'Android phone':'Android tablet';m=ua.match(/Android ([\d.]+)/);os='Android'+(m?' '+m[1]:'');
+  var mm=ch.model||(ua.match(/Android [\d.]+; ([^;)]+?)(?: Build|\))/)||[])[1];if(mm&&mm!=='K')dev=mm}
+ else if(/Windows/.test(ua))os='Windows';else if(/Mac OS X/.test(ua)){m=ua.match(/Mac OS X (\d+)[_.](\d+)/);os='macOS'}
+ else if(/CrOS/.test(ua))os='ChromeOS';else if(/Linux/.test(ua))os='Linux';
+ if(/Instagram/.test(ua))br='Instagram app';else if(/FBAN|FBAV/.test(ua))br='Facebook app';else if(/LinkedInApp/.test(ua))br='LinkedIn app';
+ else if(/WhatsApp/.test(ua))br='WhatsApp';else if(/Line\//.test(ua))br='LINE';else if(/Twitter|TwitterAndroid/.test(ua))br='X app';
+ else if(/EdgA?\/|Edg\//.test(ua))br='Edge';else if(/OPR\/|Opera/.test(ua))br='Opera';else if(/SamsungBrowser/.test(ua))br='Samsung Internet';
+ else if(/CriOS/.test(ua))br='Chrome';else if(/FxiOS|Firefox/.test(ua))br='Firefox';else if(/Chrome\//.test(ua))br='Chrome';
+ else if(/Safari\//.test(ua))br='Safari';else br=ua?'Other':'Unknown';
+ return {os:os,dev:dev,br:br,bot:BOT.test(ua)}}
+function build(){
+ var by={},order=[],ev=DATA.events;
+ ev.forEach(function(e){var p=by[e.pv];if(!p){p=by[e.pv]={pv:e.pv,ev:[]};order.push(p)}p.ev.push(e);
+  if(e.t==='view'&&!p.v)p.v=e;});
+ V=[];
+ order.forEach(function(p){if(!p.v)return;var v=p.v,g=v.geo||{},ua=parseUA(v.ua,v),d=0,sm=0,acts=[],copies=[];
+  p.ev.forEach(function(e){if(e.t==='end'){d=Math.max(d,e.dur||0);sm=Math.max(sm,e.smax||0)}
+   else if(e.t==='click')acts.push(e);else if(e.t==='copy')copies.push(e)});
+  var rh=host(v.ref||''),q=new URLSearchParams(v.q||''),src,internal=false;
+  if(rh&&rh===location.hostname.replace(/^www\./,'')){internal=true;src='Card link / swipe'}
+  else if(rh)src=rh;else if(q.get('utm_source')||q.get('src'))src=q.get('utm_source')||q.get('src');
+  else if(/Instagram|Facebook|LinkedIn|WhatsApp|X app/.test(ua.br))src=ua.br;
+  else src='Direct (QR, NFC, typed, app)';
+  V.push({v:v,ua:ua,g:g,dur:d,smax:sm,acts:acts,copies:copies,src:src,internal:internal,ts:v.ts,card:v.card,ev:p.ev});});
+ V.sort(function(a,b){return b.ts-a.ts});
+}
+function mine(){try{return JSON.parse(ls('far_log_me')||'[]')}catch(e){return[]}}
+function filtered(){var me=mine(),hide=$('hideme').checked,bots=$('bots').checked,cf=$('cardf').value;
+ return V.filter(function(x){if(hide&&me.indexOf(x.v.ip)>-1)return false;if(!bots&&x.ua.bot)return false;if(cf!=='all'&&x.card!==cf)return false;var q=$('q').value.trim().toLowerCase();if(q){var hay=[x.v.ip,x.g.city,x.g.region,x.g.cc,x.g.org,x.card,cname(x.card),x.src,x.ua.dev,x.ua.os,x.ua.br].concat(x.acts.map(function(a){return a.k+' '+labelK(a.k)})).join(' ').toLowerCase();if(hay.indexOf(q)<0)return false}return true})}
+function rows(el,map,n){var a=Object.keys(map).map(function(k){return[k,map[k]]}).sort(function(x,y){return y[1]-x[1]}).slice(0,n||8),mx=a.length?a[0][1]:1;
+ el.innerHTML=a.length?a.map(function(r){return '<div class="row"><i style="width:'+Math.max(2,100*r[1]/mx)+'%"></i><span title="'+esc(r[0])+'">'+esc(r[0])+'</span><em>'+fmt(r[1])+'</em></div>'}).join(''):'<div class="empty">–</div>'}
+function box(title){var d=document.createElement('div');d.className='box';d.innerHTML='<h2>'+esc(title)+'</h2><div></div>';$('lists').appendChild(d);return d.lastChild}
+function inc(m,k){if(!k)return;m[k]=(m[k]||0)+1}
+function render(){
+ var L=filtered(),f=$('feed');
+ if(!L.length){f.innerHTML='<div class="empty">No visits in this range yet.</div>';$('more').hidden=true}
+ else{var S=sessionsOf(L);f.innerHTML=visitorsHtml(S);$('more').hidden=S.length<=shown}
+ $('foot').innerHTML='Stored for up to 180 days on your server only. '+(DATA.geo?'IP geolocation by <a href="https://db-ip.com" style="color:inherit">DB-IP</a>.':'IP geolocation not installed, so country and city are blank.');
+}
+var CN={'home':'Home page'};
+function cname(c){return CN[c]||c}
+var tab='v';
+function actLabel(a){return labelK(a.k)+' ('+cname(a.card)+')'}
+var GAP=1800;
+function sessionsOf(L){
+ var g={};L.forEach(function(x){var k=x.v.ip+'|'+x.ua.dev+'|'+x.ua.os+'|'+x.ua.br;(g[k]=g[k]||[]).push(x)});
+ var out=[];
+ Object.keys(g).forEach(function(ip){
+  var asc=g[ip].slice().sort(function(a,b){return a.ts-b.ts}),cur=null,mine=[];
+  asc.forEach(function(x){if(!cur||x.ts-cur.end>GAP){cur={ip:x.v.ip,start:x.ts,end:x.ts,items:[],idx:mine.length};mine.push(cur)}cur.items.push(x);cur.end=Math.max(cur.end,x.ts+(x.dur||0))});
+  mine.forEach(function(s){s.all=mine;out.push(s)})});
+ out.sort(function(a,b){return b.end-a.end});return out}
+function pathOf(items){var p=[];items.forEach(function(x){if(p[p.length-1]!==x.card)p.push(x.card)});return p.map(cname).join(' → ')}
+function actChips(items,withCard){var seen={},order=[];items.forEach(function(x){x.acts.forEach(function(a){var l=withCard?actLabel({k:a.k,card:x.card}):labelK(a.k);if(!seen[l]){seen[l]=0;order.push(l)}seen[l]++})});
+ return order.map(function(l){var hot=/Called|Saved|Booked|WhatsApp|Telegram|Emailed/.test(l);return '<span class="c'+(hot?' hot':'')+'">'+esc(l)+(seen[l]>1?' ×'+seen[l]:'')+'</span>'}).join('')}
+function hm(ts){return new Date(ts*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
+function techHtml(x){var v=x.v,g=x.g;
+ var det=[['Time',new Date(x.ts*1000).toString()],['Card',(v.card||'')+' ('+(v.path||'')+')'],['IP address',v.ip],['Visitor id (IP+browser, per month)',v.vid],
+  ['Network',[g.org,g.asn?'AS'+g.asn:''].filter(Boolean).join(' · ')],['Approx. location',[g.city,g.region,g.cc].filter(Boolean).join(', ')+(g.lat?' ('+g.lat+', '+g.lon+')':'')],
+  ['Device',x.ua.dev+' · '+x.ua.os+' · '+x.ua.br],['Platform',[v.plat,v.ch&&v.ch.p,v.ch&&v.ch.pv,v.ch&&v.ch.arch].filter(Boolean).join(' · ')],
+  ['Client hints',v.ch?[].concat(v.ch.b||[]).join(', '):''],['Screen / viewport',(v.scr||'')+' / '+(v.vp||'')+' @'+(v.dpr||'')+'x'],['Touch points',v.touch],['Cores / memory',(v.cores||'')+(v.mem?' / '+v.mem+' GB':'')],
+  ['Languages',(v.lang||[]).join(', ')+(v.al?'  (header: '+v.al+')':'')],['Time zone',(v.tz||'')+' (UTC offset '+(v.tzo!=null?-v.tzo/60:'?')+'h)'],
+  ['Appearance',(v.dark?'Dark':'Light')+(v.rm?' · reduced motion':'')+(v.sa?' · home-screen app':'')],['Connection',[v.net,v.dl?v.dl+' Mbps':'',v.sd?'data saver':''].filter(Boolean).join(' · ')],
+  ['Arrival',(v.nav||'')+(v.hist?' · history length '+v.hist:'')+(v.load?' · loaded in '+v.load+' ms':'')],['Referrer',v.ref||v.rh||'(none)'],['Query string',v.q||''],
+  ['Time on page',dur(x.dur)+' · scrolled '+x.smax+'%'],['User agent',v.ua]];
+ return '<dl>'+det.filter(function(r){return r[1]!==''&&r[1]!=null&&r[1]!==undefined}).map(function(r){return '<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>'}).join('')+'</dl>'}
+function visitorsHtml(S){
+ return S.slice(0,shown).map(function(s){
+  var f=s.items[s.items.length-1],v=f.v,g0=f.g,devs=[];
+  s.items.forEach(function(x){var d=x.ua.dev+' · '+x.ua.os+' · '+x.ua.br;if(devs.indexOf(d)<0)devs.push(d)});
+  var place=g0.city?(flag(g0.cc)+' '+esc(g0.city)+(g0.region&&g0.region!==g0.city?', '+esc(g0.region):'')):(g0.cc?flag(g0.cc)+' '+esc(g0.cc):'<span class="t">unknown place</span>');
+  var prev=s.all.slice(0,s.idx).reverse(),next=s.all.length-s.idx-1;
+  var chips=actChips(s.items,true)||'<span class="t">just looked</span>';
+  var steps=s.items.map(function(x){
+   var a=x.acts.map(function(a){return '<span class="c'+(HOT[a.k]?' hot':'')+'">'+esc(labelK(a.k))+'</span>'}).join(' ')||'<span class="t">just looked</span>';
+   var cp=x.copies.map(function(c){return '<span class="c">Copied “'+esc(c.sel)+'”</span>'}).join(' ');
+   return '<div class="step"><span class="t">'+new Date(x.ts*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})+'</span> <b>'+esc(cname(x.card))+'</b> <span class="t">'+dur(x.dur)+(x.smax?' · scrolled '+x.smax+'%':'')+'</span> '+a+' '+cp+'</div>'}).join('');
+  var came=s.items[0].src+(s.items[0].internal?'':'');
+  var ph=prev.length?prev.map(function(p){return '<div class="sess"><div class="hd">'+when(p.start)+(p.end>p.start?' – '+hm(p.end):'')+' · '+esc(pathOf(p.items))+'</div><div class="step">'+(actChips(p.items,true)||'<span class="t">just looked</span>')+'</div></div>'}).join(''):'<div class="t" style="padding:2px 0 0 6px">First time this IP and device has been seen.</div>';
+  var tag=prev.length?'<span class="c">returning · '+prev.length+' earlier</span>':'<span class="c">first visit</span>';
+  return '<details class="vis"><summary><div><b>'+when(s.start)+'</b>'+(hm(s.end)!==hm(s.start)?' – '+hm(s.end):'')+'<span class="s">'+ago(s.end)+'</span></div>'+
+   '<div>'+place+'<span class="s">'+esc(s.ip)+(g0.org?' · '+esc(g0.org):'')+'</span><span class="s">'+esc(devs.join(' | '))+'</span></div>'+
+   '<div>'+esc(pathOf(s.items))+'<div class="chips" style="margin-top:4px">'+chips+'</div></div></summary>'+
+   '<div class="sess"><div class="hd">This visit ('+esc(came)+') '+tag+'</div>'+steps+'</div>'+
+   '<div class="sess"><div class="hd">Earlier from this IP &amp; device ('+esc(s.ip)+')</div>'+ph+'</div>'+'<details class="tech"><summary>Technical details</summary>'+techHtml(s.items[0])+'</details></details>'}).join('')}
+function matrix(L){var cs={},ks={},m={};L.forEach(function(x){cs[x.card]=1;x.acts.forEach(function(a){ks[a.k]=(ks[a.k]||0)+1;var key=x.card+'|'+a.k;m[key]=(m[key]||0)+1})});
+ var K=Object.keys(ks).sort(function(a,b){return ks[b]-ks[a]}).slice(0,9),C=Object.keys(cs).sort();
+ if(!K.length)return '<div class="empty">–</div>';
+ return '<table class="mx"><tr><th></th>'+K.map(function(k){return '<th>'+esc(labelK(k))+'</th>'}).join('')+'</tr>'+C.map(function(c){return '<tr><td>'+esc(cname(c))+'</td>'+K.map(function(k){return '<td>'+(m[c+'|'+k]||'')+'</td>'}).join('')+'</tr>'}).join('')+'</table>'}
+var KL={save_contact:'Saved contact',call:'Called',email:'Emailed',booking:'Booked a meeting',whatsapp:'WhatsApp',telegram:'Telegram',linkedin:'LinkedIn',github:'GitHub',facebook:'Facebook',instagram:'Instagram',x:'X',card_switch:'Opened another card',swipe:'Swiped to another card',internal:'Internal link',link:'Other link'};
+function labelK(k){return KL[k]||k}
+var HOT={save_contact:1,booking:1,call:1,email:1,whatsapp:1,telegram:1};
+function rowHtml(x){var v=x.v,g=x.g,place=g.city?(flag(g.cc)+' '+esc(g.city)+(g.region&&g.region!==g.city?', '+esc(g.region):'')):(g.cc?flag(g.cc)+' '+esc(g.cc):'<span class="t">unknown place</span>');
+ var chips=x.acts.map(function(a){return '<span class="c'+(HOT[a.k]?' hot':'')+'">'+esc(labelK(a.k))+'</span>'}).join('')||'<span class="t">viewed only</span>';
+ var det=[['Time',new Date(x.ts*1000).toString()],['Card',(v.card||'')+' ('+(v.path||'')+')'],['IP address',v.ip],['Visitor id (IP+browser, per month)',v.vid],
+  ['Network',[g.org,g.asn?'AS'+g.asn:''].filter(Boolean).join(' · ')],['Approx. location',[g.city,g.region,g.cc].filter(Boolean).join(', ')+(g.lat?' ('+g.lat+', '+g.lon+')':'')],
+  ['Device',x.ua.dev+' · '+x.ua.os+' · '+x.ua.br],['Platform',[v.plat,v.ch&&v.ch.p,v.ch&&v.ch.pv,v.ch&&v.ch.arch].filter(Boolean).join(' · ')],
+  ['Client hints',v.ch?[].concat(v.ch.b||[]).join(', '):''],['Screen / viewport',(v.scr||'')+' / '+(v.vp||'')+' @'+(v.dpr||'')+'x'],['Touch points',v.touch],['Cores / memory',(v.cores||'')+(v.mem?' / '+v.mem+' GB':'')],
+  ['Languages',(v.lang||[]).join(', ')+(v.al?'  (header: '+v.al+')':'')],['Time zone',(v.tz||'')+' (UTC offset '+(v.tzo!=null?-v.tzo/60:'?')+'h)'],
+  ['Appearance',(v.dark?'Dark':'Light')+(v.rm?' · reduced motion':'')+(v.sa?' · home-screen app':'')],['Connection',[v.net,v.dl?v.dl+' Mbps':'',v.sd?'data saver':''].filter(Boolean).join(' · ')],
+  ['Arrival',(v.nav||'')+(v.hist?' · history length '+v.hist:'')+(v.load?' · loaded in '+v.load+' ms':'')],['Referrer',v.ref||v.rh||'(none)'],['Query string',v.q||''],
+  ['Time on page',dur(x.dur)+' · scrolled '+x.smax+'%'],['User agent',v.ua]];
+ var tl=x.ev.slice().sort(function(a,b){return a.ts-b.ts}).map(function(e){var s=new Date(e.ts*1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  var w=e.t==='view'?'Opened the page':e.t==='end'?'Left (on page '+dur(e.dur)+', scrolled '+(e.smax||0)+'%)':e.t==='copy'?'Copied text: “'+esc(e.sel)+'”':labelK(e.k)+(e.href?' → '+esc(e.href):'')+(e.txt?' (“'+esc(e.txt)+'”)':'');
+  return '<li><span class="t">'+s+'</span> '+w+'</li>'}).join('');
+ return '<details class="v"><summary><div>'+when(x.ts)+'<span class="s">'+ago(x.ts)+'</span></div><div>'+place+'<span class="s">'+esc(v.ip)+'</span></div>'+
+  '<div>'+esc(x.ua.dev)+'<span class="s">'+esc(x.ua.os)+' · '+esc(x.ua.br)+'</span></div><div>'+esc(x.src)+'<span class="s"><span class="c card">'+esc(x.card)+'</span></span></div><div>'+dur(x.dur)+'</div><div class="chips">'+chips+'</div></summary>'+
+  '<div class="det"><dl>'+det.filter(function(r){return r[1]!==''&&r[1]!=null&&r[1]!==undefined}).map(function(r){return '<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>'}).join('')+'</dl><ul class="tl">'+tl+'</ul></div></details>'}
+function refreshMe(){var b=$('markme'),ip=DATA.you,m=mine().indexOf(ip)>-1;b.textContent=m?'Unmark my IP ('+ip+')':'Mark my IP as me ('+ip+')'}
+function download(name,type,text){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
+function csv(){var cols=['time','card','ip','country','city','region','org','device','os','browser','source','lang','tz','screen','duration_s','scroll_pct','actions'];
+ var q=function(s){s=String(s==null?'':s);return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+ return [cols.join(',')].concat(filtered().map(function(x){var v=x.v,g=x.g;return [new Date(x.ts*1000).toISOString(),x.card,v.ip,g.cc,g.city,g.region,g.org,x.ua.dev,x.ua.os,x.ua.br,x.src,(v.lang||[])[0],v.tz,v.scr,x.dur,x.smax,x.acts.map(function(a){return a.k}).join('|')].map(q).join(',')})).join('\n')}
+function fillCards(){var cs={};V.forEach(function(x){cs[x.card]=1});var cur=$('cardf').value||'all';
+ $('cardf').innerHTML='<option value="all">All cards</option>'+Object.keys(cs).sort().map(function(c){return '<option>'+esc(c)+'</option>'}).join('');$('cardf').value=cs[cur]?cur:'all'}
+function show(which){$('lock').hidden=which!=='lock';$('main').hidden=which!=='main'}
+function load(){var tok=window.FAR_API?'admin':ls('far_log_token');if(!tok){show('lock');return}
+ var body='token='+encodeURIComponent(tok)+'&days='+$('days').value;
+ fetch(API,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body,cache:'no-store'}).then(function(r){
+  if(r.status===403){ls('far_log_token',null);show('lock');$('err').textContent='Wrong token.';return null}
+  if(!r.ok)throw new Error(r.status);return r.json()}).then(function(d){if(!d)return;DATA=d;build();fillCards();refreshMe();
+  $('sub').textContent=fmt(d.events.length)+' events · updated '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});show('main');shown=100;render()})
+  .catch(function(e){show('lock');$('err').textContent='Could not load the log ('+e.message+').'});}
+$('f').addEventListener('submit',function(e){e.preventDefault();ls('far_log_token',$('tok').value.trim());$('err').textContent='';load()});
+$('days').addEventListener('change',load);$('refresh').addEventListener('click',load);
+$('q').addEventListener('input',function(){shown=100;render()});
+['hideme','bots','cardf'].forEach(function(i){$(i).addEventListener('change',function(){shown=100;render()})});
+$('more').addEventListener('click',function(){shown+=200;render()});
+$('markme').addEventListener('click',function(){var m=mine(),i=m.indexOf(DATA.you);if(i>-1)m.splice(i,1);else m.push(DATA.you);ls('far_log_me',JSON.stringify(m));refreshMe();render()});
+$('csv').addEventListener('click',function(){download('far-visits.csv','text/csv',csv())});
+$('json').addEventListener('click',function(){download('far-events.json','application/json',JSON.stringify(DATA.events,null,1))});
+$('lockbtn').addEventListener('click',function(){ls('far_log_token',null);DATA=null;show('lock')});
+(function(){var m=/[#&]t=([0-9a-f]{16,64})/.exec(location.hash);if(m){ls('far_log_token',m[1]);try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}})();
+load();
+})();
+</script>
+</body>
+</html>
